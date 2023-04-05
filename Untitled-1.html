@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <meta charset="UTF-8">
+      <title>Chatbot Demo</title>
+   </head>
+   <body>
+      <h1>Chatbot Demo</h1>
+      <div>
+         <input type="text" id="userInput" placeholder="请输入你的问题...">
+         <button onclick="sendMessage()">发送</button>
+      </div>
+      <div id="chatbotOutput"></div>
+      <script src="https://cdn.jsdelivr.net/npm/@openai/api"></script>
+      <script>
+         const openai = new OpenAI('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');
+         async function sendMessage() {
+            const input = document.getElementById("userInput").value;
+            const response = await openai.complete({
+                engine: 'text-davinci-002',
+                prompt: `Q: ${input}\nA:`,
+                maxTokens: 100,
+                n: 1,
+                stop: "\n"
+            });
+            const output = response.choices[0].text.trim();
+            document.getElementById("chatbotOutput").innerHTML += "<p><b>You:</b> " + input + "</p><p><b>Chatbot:</b> " + output + "</p>";
+         }
+      </script>
+   </body>
+</html>
